@@ -109,6 +109,16 @@
 						</p>
 
 
+						<div class="mb-3">
+							<form action="{% url 'khalti_initiate' %}" method="POST">
+								{% csrf_token %}
+								<input type="hidden" name="order_number" value="{{ order.order_number }}">
+								<button type="submit" class="btn btn-primary btn-block" style="background-color: #5C2D91; border-color: #5C2D91;">
+									Pay with Khalti
+								</button>
+							</form>
+						</div>
+
 						<div id="paypal-button-container">
 							<!-- PayPal Button Will Load -->
 						</div>
@@ -127,6 +137,7 @@
 </section>
 <!-- ========================= SECTION CONTENT END// ========================= -->
 
+<script src="https://www.paypal.com/sdk/js?client-id=test&currency=USD"></script>
 <script>
 
 	function getCookie(name) {
@@ -150,7 +161,7 @@
 	var csrftoken = getCookie('csrftoken');
 	var orderID = "{{order.order_number}}"
 	var payment_method = 'PayPal'
-	var redirect_url = "#"
+	var redirect_url = "{% url 'order_complete' %}"
 	// Render the PayPal button into #paypal-button-container
 	paypal.Buttons({
 

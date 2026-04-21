@@ -96,6 +96,12 @@ def checkout(request, total=0, quantity=0, cart_items=None):
         grand_total = 0
         if request.user.is_authenticated:
             cart_items = CartItem.objects.filter(user=request.user, is_active=True)
+            if not cart_items.exists():
+                try:
+                    cart = Cart.objects.get(cart_id=_cart_id(request))
+                    cart_items = CartItem.objects.filter(cart=cart, is_active=True)
+                except Cart.DoesNotExist:
+                    cart_items = []
         else:
             cart = Cart.objects.get(cart_id=_cart_id(request))
             cart_items = CartItem.objects.filter(cart=cart, is_active=True)
